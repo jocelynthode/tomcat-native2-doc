@@ -1,4 +1,4 @@
-# Documentation for the [tomcat-native fork](https://github.com/jocelynthode/tomcat-native)
-> Group all the documentations for the project [tomcat-native fork](https://github.com/jocelynthode/tomcat-native)
+# Documentation for the [tomcat-native2](https://github.com/jocelynthode/tomcat-native2)
+> Group all the documentations for the project [tomcat-native2](https://github.com/jocelynthode/tomcat-native2)
 
-### Look for the [wiki](https://github.com/jocelynthode/undertow-native-doc/wiki)
+### Look for the [wiki](https://github.com/jocelynthode/tomcat-native2-doc/wiki)
