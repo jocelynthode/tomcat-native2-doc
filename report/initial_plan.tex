@@ -78,11 +78,11 @@
 \subsection{Project context}
 For this project we are working with \theclient{} which is a multinational software company that provides open-source software and technical support to enterprises\autocite{redhat}.
 At the moment, the two biggest Java web servers are Tomcat\autocite{tomcat} and Undertow\autocite{undertow}. Both rely on TLS/SSL to encrypt and secure communications between a client and a server. To achieve good performance Tomcat Native\autocite{tomcat-native} provides access to OpenSSL in Tomcat. It uses Apache Portable Runtime (APR) to do so. 
-Unfortunately, Undertow isn’t compatible with Tomcat Native at the moment.
+Unfortunately, Undertow isn't compatible with Tomcat Native at the moment.
 Until last year, the APR would manage the encrypted sockets by itself. However this implied a lot of C code to maintain. To ease maintenance, some work has been done to use OpenSSL APIs directly instead. This works well enough despite some acceptable performance penalty. However the APR still provides the bindings to these APIs.
 We now want to strip the current solution of the APR and make the result compatible with Undertow.
 
-% GRAPH EXPLAINING
+%TODO: already use diagram here ? we may use it in state of the art. Or move state of the art upper ?
 
 \subsection{Goals and objectives of the project}
 
@@ -91,11 +91,12 @@ This means we need to :
 \begin{enumerate}
 \item Study the source code of Tomcat Native, Undertow and some experiments already done to use OpenSSL in Undertow.
 \item Remove all APR code present in Tomcat Native
-\item Abstract Tomcat Native to be used in Tomcat and Undertow through JNI calls
+\item Abstract Tomcat Native to be used in Tomcat and Undertow
 \item Provide good documentation so that the open-source community can use the project
 \item Run benchmarks to test the implementation on multiple platforms
-\item Extend the OpenSSL support by adding JNI calls for more functions
+\item Extend the OpenSSL support by adding JNIs for more features
 \end{enumerate}
+
 
 \section{Project organization}
 \label{sec:org}
@@ -143,18 +144,18 @@ For this project we do not have any choice in the technology used. We work with 
 
 As stated earlier, we almost always get together on a VoIP chat room so that we can easily and quickly share our findings and ask questions to each other. Otherwise we try to make a work plan for the day and then split the tasks evenly from there.
 
-We mostly use Intellij Idea for our development environment. We use git coupled to Github as the source version control. We may also use Github issues in the future to track problems we may encounter during the implementation.
+We mostly use Intellij IDEA for our development environment. We use git coupled to Github as the source version control. We may also use Github issues in the future to track problems we may encounter during the implementation.
 
 Every source code we use is free (as in freedom). They are licensed under the Apache License 2.0. Our work is completely open-source as required by Red Hat and will probably be under the Apache Licence 2.0 as it is a fork of Tomcat Native.
 \subsection{State of the art}
 
-At the moment, only Tomcat has access to OpenSSL through its library Tomcat Native. Unfortunately Undertow has to rely on the JSSE implementation to provide SSL/TLS. This leads to bad performance in Undertow.
+At the moment, only Tomcat has access to OpenSSL through its library Tomcat Native. Unfortunately Undertow has to rely on the SSL implementation given by JSSE to provide SSL/TLS support. This leads to bad performance in Undertow.
 
 On the other hand, Tomcat through Tomcat Native uses APR to access OpenSSL which is not ideal as this adds a lot of C code to maintain and isn't that useful anymore.
 
-Our project should streamline Tomcat Native so that it can be used in both Undertow and Tomcat, giving access to a performant implementation of TLS/SSL to Undertow while making it easier to maintain the source code for  Tomcat as well.
+Our project should streamline Tomcat Native so that it can be used in both Undertow and Tomcat, giving access to a high-performance implementation of TLS/SSL to Undertow while making it easier to maintain the source code for  Tomcat as well.
 
-%TODO relire
+%TODO: use diagram p.1 ?
 
 \section{Constraints and elements of risk}
 
@@ -173,14 +174,13 @@ We have three main risks in our project:
 
 \textit{However, we can always ask Rémy, Jean-Frederic and Stuart for help if we are stuck on a particular problem as we already did multiple times. Since the projects are open source we can also rely on the community to provide us documentation and help.}
 
-\item Evaluating the time needed to adapt Tomcat can be deceptive as we have to remove code instead of writing it. This could lead to some conflicts where we remove too much or not enough or we simply don’t know what to remove to make it effective.
+\item Evaluating the time needed to adapt Tomcat can be deceptive as we have to remove code instead of writing it. This could lead to some conflicts where we remove too much or not enough or we simply don't know what to remove to make it effective.
 
 \textit{Stuart has already done some experiments with Undertow which can help us visualize what to remove. Having our work plan checked by Rémy and Jean-Frederic can also help us in that regard.}
-\item Adapting Tomcat Native to work with both Undertow and Tomcat might not be the best solution. An other approach could be to use the code written by Stuart Douglas for Undertow and modify it to work with Tomcat. This would require us to write a lot more code than the Tomcat Native route and could make us lose a lot of time if we don’t choose the right alternative at the beginning.
+\item Adapting Tomcat Native to work with both Undertow and Tomcat might not be the best solution. An other approach could be to use the code written by Stuart Douglas for Undertow and modify it to work with Tomcat. This would require us to write a lot more code than the Tomcat Native route and could make us lose a lot of time if we don't choose the right alternative at the beginning.
 
 \textit{Rémy and Jean-Frederic think that the Tomcat Native route is the easiest and we agree. Removing code is almost always easier than writing it.}
 \end{enumerate}
-
 
 
 \section{Deliverable goods}
@@ -210,21 +210,21 @@ This deadline finishes with the hand-in of this plan. The project is on good tra
 \subsection{Task 2}
 \label{subsec:task2}
 
-In this second task, we want to understand more precisely what is needed for the  OPENSSL JSSE % TODO TOMCAT OPENSSL JSSEENGINE   WHY j'ai pas compris dans le work
+In this second task, we want to understand more precisely what is needed to keep the OpenSSL engine for JSSE working.
 
-We then will write JNIs for OpenSSL to replace the ones from APR and completely remove APR from the Tomcat Native code base. as APR isn't needed anymore and Tomcat Native gives access to most of the APR functions which we don't need as we want to focus solely on OpenSSL.  This deadline should be done by the 10th April 2016.
+We then will write JNIs for OpenSSL to replace the ones from the APR. At this point we won't need the APR anymore, so we will completely remove it from the Tomcat Native code base. This task should be done by the 10th April 2016.
 
 \subsection{Task 3}
 \label{subsec:task3}
 
-At the end of the third task, we aim at having a fully working \mytitle{} working for both Tomcat and Undertow. To achieve this goal we need to understand thoroughly how the JSSE SSL Engine and Java sockets are used in both web servers as well as understand how the JSSE OpenSSL engine works in Tomcat and how could we modify it to make it work in Undertow.
+At the end of the third task, we aim at having a fully working \mytitle{} for both Tomcat and Undertow. To achieve this goal we need to understand thoroughly how the JSSE SSL Engine and Java sockets are used in both web servers as well as understand how the JSSE OpenSSL engine works in Tomcat and how could we modify it to make it work in Undertow.
 
 \subsection{Task 4}
 \label{subsec:task4}
 
-Finally, we will have to Benchmark \mytitle{} with Red Hat to see how it behaves on different platforms. Then, if time permits, we will implement more features in \mytitle{} regarding OpenSSL. For example, implementing support the OpenSSL handshake callback would be really useful as right now we have to rely on a hack to know when the handshake is completed.
+Finally, we will have to benchmark \mytitle{} with Red Hat to see how it behaves in different conditions. Then, if time permits, we will implement more features in \mytitle{} regarding OpenSSL. For example, implementing support the OpenSSL handshake callback would be really useful as right now we have to rely on a hack to know when the handshake is completed.
 
-Implementing support for proprietary large frames would also be a boon as we could support more systems.
+Implementing support for proprietary large frames would also more performance on some systems.
 
 Finally, implementing different security options for OpenSSL would also be a possibility.
 
