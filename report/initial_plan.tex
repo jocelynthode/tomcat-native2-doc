@@ -6,6 +6,7 @@
 %\usepackage{amssymb}
 \usepackage[footsepline]{scrlayer-scrpage}
 \usepackage{tabu}
+\usepackage{placeins}
 %\usepackage{longtable}
 \usepackage{multirow}
 \usepackage{setspace}
@@ -47,6 +48,8 @@
 
 \begin{document}
 
+\graphicspath{{figures/}}
+
 \begin{titlingpage}
 
 \maketitle
@@ -70,6 +73,7 @@
 
 \setcounter{tocdepth}{2}
 \tableofcontents
+\listoffigures
 
 \pagebreak
 
@@ -82,7 +86,7 @@ Unfortunately, Undertow isn't compatible with Tomcat Native at the moment.
 Until last year, the APR would manage the encrypted sockets by itself. However this implied a lot of C code to maintain. To ease maintenance, some work has been done to use OpenSSL APIs directly instead. This works well enough despite some acceptable performance penalty. However the APR still provides the bindings to these APIs.
 We now want to strip the current solution of the APR and make the result compatible with Undertow.
 
-%TODO: already use diagram here ? we may use it in state of the art. Or move state of the art upper ?
+Figure \ref{fig:current} shows an overview of the different way to use TLS/SSL in Tomcat.
 
 \subsection{Goals and objectives of the project}
 
@@ -97,6 +101,7 @@ This means we need to :
 \item Extend the OpenSSL support by adding JNIs for more features
 \end{enumerate}
 
+Figure \ref{fig:goal} shows what is expected at the end of the project.
 
 \section{Project organization}
 \label{sec:org}
@@ -164,7 +169,7 @@ Our project should streamline Tomcat Native so that it can be used in both Under
 
 The main constraint of our project is that everything must be open-source. This forces us to have really good documentation as our source code is completely visible and will be used by the community afterwards.
 
-% TODO maybe more constraints ?
+An other constraint is the fact that we have to work with people all around the world. This can create some problems when waiting on answer because of timezone differences.
 
 \subsection{Risks}
 \label{subsec:risks}
@@ -190,7 +195,7 @@ At the end of the project we will deliver an OpenSSL wrapper using JNI calls bas
 These will be delivered on Github in the repository presented in chapter 2. This should help the community understand our project and continue working on it.
 
 \section{Efforts and schedule}
-The full work plan and its associated logbook is available on the documentation repository referred in chapter \ref{sec:org}.
+The full work plan and its associated logbook is available on the documentation repository referred in chapter \ref{sec:org}. We also reproduced it in Figure \ref{fig:workplan}
 
 Our project is split up along the fixed deadlines/tasks specified by the R\&D Workshop :
 \begin{itemize}
@@ -227,9 +232,34 @@ Finally, we will have to benchmark \mytitle{} with Red Hat to see how it behaves
 Implementing support for proprietary large frames would also more performance on some systems.
 
 Finally, implementing different security options for OpenSSL would also be a possibility.
-
-%TODO add table from workplan
-
+\newpage
 \printbibliography
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.7]{diagram_current_way.pdf}
+\end{center}
+\caption{\textbf{Diagram showing the different possibilities to use TLS/SSL in Tomcat.}}
+\label{fig:current}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.7]{diagram_goal.pdf}
+\end{center}
+\caption{\textbf{Diagram showing the expected end result of our project.}}
+\label{fig:goal}
+\end{figure}
+
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.5]{workplan.png}
+\end{center}
+\caption{\textbf{Workplan table from the wiki}}
+\label{fig:workplan}
+\end{figure}
+
+\FloatBarrier
 
 \end{document}
