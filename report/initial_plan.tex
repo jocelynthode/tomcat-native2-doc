@@ -86,7 +86,7 @@ Unfortunately, Undertow isn't compatible with Tomcat Native at the moment.
 Until last year, the APR would manage the encrypted sockets by itself. However this implied a lot of C code to maintain. To ease maintenance, some work has been done to use OpenSSL APIs directly instead. This works well enough despite some acceptable performance penalty. However the APR still provides the bindings to these APIs.
 We now want to strip the current solution of the APR and make the result compatible with Undertow.
 
-Figure \ref{fig:current} shows an overview of the different way to use TLS/SSL in Tomcat.
+Figure \ref{fig:current} shows an overview of the different way to use TLS/SSL in Tomcat. This figure describes the path taken by a piece of data, going from Tomcat/Undertow to the OS network layer. There is a different color for each way to use TLS/SSL.
 
 \subsection{Goals and objectives of the project}
 
@@ -154,13 +154,15 @@ We mostly use Intellij IDEA for our development environment. We use git coupled 
 Every source code we use is free (as in freedom). They are licensed under the Apache License 2.0. Our work is completely open-source as required by Red Hat and will probably be under the Apache Licence 2.0 as it is a fork of Tomcat Native.
 \subsection{State of the art}
 
+See figure\ref{fig:current} for a visual representation.
+
 At the moment, only Tomcat has access to OpenSSL through its library Tomcat Native. Unfortunately Undertow has to rely on the SSL implementation given by JSSE to provide SSL/TLS support. This leads to bad performance in Undertow.
 
 On the other hand, Tomcat through Tomcat Native uses APR to access OpenSSL which is not ideal as this adds a lot of C code to maintain and isn't that useful anymore.
 
 Our project should streamline Tomcat Native so that it can be used in both Undertow and Tomcat, giving access to a high-performance implementation of TLS/SSL to Undertow while making it easier to maintain the source code for  Tomcat as well.
 
-%TODO: use diagram p.1 ?
+
 
 \section{Constraints and elements of risk}
 
@@ -239,7 +241,7 @@ Finally, implementing different security options for OpenSSL would also be a pos
 \begin{center}
 \includegraphics[scale=0.7]{diagram_current_way.pdf}
 \end{center}
-\caption{\textbf{Diagram showing the different possibilities to use TLS/SSL in Tomcat.}}
+\caption{\textbf{Diagram showing the different ways to use TLS/SSL in Tomcat.}}
 \label{fig:current}
 \end{figure}
 
