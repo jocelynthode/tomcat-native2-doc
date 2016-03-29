@@ -81,7 +81,7 @@
 
 \subsection{Project context}
 For this project we are working with \theclient{} which is a multinational software company that provides open-source software and technical support to enterprises\autocite{redhat}.
-At the moment, Tomcat\autocite{tomcat} and Undertow\autocite{undertow} are among the most used web servers. Both rely on TLS/SSL to encrypt and secure communications between a client and a server. To achieve good performance Tomcat Native\autocite{tomcat-native} provides access to OpenSSL in Tomcat. It uses Apache Portable Runtime (APR) to do so. 
+At the moment, Tomcat\autocite{tomcat} and Undertow\autocite{undertow} are among the most used Java web servers. Both rely on TLS/SSL to encrypt and secure communications between a client and a server. To achieve good performance Tomcat Native\autocite{tomcat-native} provides access to OpenSSL in Tomcat. It uses Apache Portable Runtime (APR) to do so. 
 Unfortunately, Undertow isn't compatible with Tomcat Native at the moment.
 Until last year, the APR would manage the encrypted sockets by itself. However this implied a lot of C code to maintain. To ease maintenance, some work has been done to use OpenSSL APIs directly instead. This works well enough despite some acceptable performance penalty. However the APR still provides the bindings to these APIs.
 We now want to strip the current solution of the APR and make the result compatible with Undertow.
