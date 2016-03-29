@@ -81,12 +81,12 @@
 
 \subsection{Project context}
 For this project we are working with \theclient{} which is a multinational software company that provides open-source software and technical support to enterprises\autocite{redhat}.
-At the moment, the two biggest Java web servers are Tomcat\autocite{tomcat} and Undertow\autocite{undertow}. Both rely on TLS/SSL to encrypt and secure communications between a client and a server. To achieve good performance Tomcat Native\autocite{tomcat-native} provides access to OpenSSL in Tomcat. It uses Apache Portable Runtime (APR) to do so. 
+At the moment, Tomcat\autocite{tomcat} and Undertow\autocite{undertow} are among the most used web servers. Both rely on TLS/SSL to encrypt and secure communications between a client and a server. To achieve good performance Tomcat Native\autocite{tomcat-native} provides access to OpenSSL in Tomcat. It uses Apache Portable Runtime (APR) to do so. 
 Unfortunately, Undertow isn't compatible with Tomcat Native at the moment.
 Until last year, the APR would manage the encrypted sockets by itself. However this implied a lot of C code to maintain. To ease maintenance, some work has been done to use OpenSSL APIs directly instead. This works well enough despite some acceptable performance penalty. However the APR still provides the bindings to these APIs.
 We now want to strip the current solution of the APR and make the result compatible with Undertow.
 
-Figure \ref{fig:current} shows an overview of the different way to use TLS/SSL in Tomcat. This figure describes the path taken by a piece of data, going from Tomcat/Undertow to the OS network layer. There is a different color for each way to use TLS/SSL.
+Figure \ref{fig:current} shows an overview of the different ways to use TLS/SSL in Tomcat. This figure describes the path taken by a piece of data, going from Tomcat/Undertow to the OS network layer. There is a different color for each way to use TLS/SSL.
 
 \subsection{Goals and objectives of the project}
 
@@ -171,7 +171,7 @@ Our project should streamline Tomcat Native so that it can be used in both Under
 
 The main constraint of our project is that everything must be open-source. This forces us to have really good documentation as our source code is completely visible and will be used by the community afterwards.
 
-An other constraint is the fact that we have to work with people all around the world. This can create some problems when waiting on answer because of timezone differences.
+Another constraint is the fact that we have to work with people all around the world. This can create some problems when waiting on answers because of timezone differences.
 
 \subsection{Risks}
 \label{subsec:risks}
@@ -184,7 +184,7 @@ We have three main risks in our project:
 \item Evaluating the time needed to adapt Tomcat can be deceptive as we have to remove code instead of writing it. This could lead to some conflicts where we remove too much or not enough or we simply don't know what to remove to make it effective.
 
 \textit{Stuart has already done some experiments with Undertow which can help us visualize what to remove. Having our work plan checked by Rémy and Jean-Frederic can also help us in that regard.}
-\item Adapting Tomcat Native to work with both Undertow and Tomcat might not be the best solution. An other approach could be to use the code written by Stuart Douglas for Undertow and modify it to work with Tomcat. This would require us to write a lot more code than the Tomcat Native route and could make us lose a lot of time if we don't choose the right alternative at the beginning.
+\item Adapting Tomcat Native to work with both Undertow and Tomcat might not be the best solution. Another solution could be to use the code written by Stuart Douglas for Undertow and modify it to work with Tomcat. This would require us to write a lot more code than the Tomcat Native route and could make us lose a lot of time if we don't choose the right alternative at the beginning.
 
 \textit{Rémy and Jean-Frederic think that the Tomcat Native route is the easiest and we agree. Removing code is almost always easier than writing it.}
 \end{enumerate}
@@ -197,7 +197,7 @@ At the end of the project we will deliver an OpenSSL wrapper using JNI calls bas
 These will be delivered on Github in the repository presented in chapter 2. This should help the community understand our project and continue working on it.
 
 \section{Efforts and schedule}
-The full work plan and its associated logbook is available on the documentation repository referred in chapter \ref{sec:org}. We also reproduced it in Figure \ref{fig:workplan}
+The full work plan and its associated logbook is available in the documentation repository referred in chapter \ref{sec:org}. We also reproduced it in Figure \ref{fig:workplan}
 
 Our project is split up along the fixed deadlines/tasks specified by the R\&D Workshop :
 \begin{itemize}
@@ -211,29 +211,29 @@ Each task is defined more precisely in the next sub-chapters.
 
 \subsection{Task 1}
 \label{subsec:task1}
-The first task is entirely dedicated to understand what  is expected of us and how the different projects such as Tomcat Native work. Reading documentation will be done throughout the entire project, but here it is especially important as we have to understand the main concepts.
+The first task is entirely dedicated to understanding what  is expected of us and how the different projects such as Tomcat Native work. Reading documentation will be done throughout the entire project, but here it is especially important as we have to understand the main concepts.
 
-This deadline finishes with the hand-in of this plan. The project is on good tracks at the moment.
+This deadline finishes with the hand-in of this plan. The project is on track at the moment.
 \subsection{Task 2}
 \label{subsec:task2}
 
 In this second task, we want to understand more precisely what is needed to keep the OpenSSL engine for JSSE working.
 
-We then will write JNIs for OpenSSL to replace the ones from the APR. At this point we won't need the APR anymore, so we will completely remove it from the Tomcat Native code base. This task should be done by the 10th April 2016.
+We then will write JNIs for OpenSSL to replace the ones from the APR. At this point we won't need the APR anymore, so we will completely remove it from the Tomcat Native code base. This task should be done by the 10\textsuperscript{th} April 2016.
 
 \subsection{Task 3}
 \label{subsec:task3}
 
-At the end of the third task, we aim at having a fully working \mytitle{} for both Tomcat and Undertow. To achieve this goal we need to understand thoroughly how the JSSE SSL Engine and Java sockets are used in both web servers as well as understand how the JSSE OpenSSL engine works in Tomcat and how could we modify it to make it work in Undertow.
+At the end of the third task, we plan to have a fully working \mytitle{} for both Tomcat and Undertow. To achieve this goal we need to understand thoroughly how the JSSE SSL Engine and Java sockets are used in both web servers as well as understand how the JSSE OpenSSL engine works in Tomcat and how could we modify it to make it work in Undertow.
 
 \subsection{Task 4}
 \label{subsec:task4}
 
 Finally, we will have to benchmark \mytitle{} with Red Hat to see how it behaves in different conditions. Then, if time permits, we will implement more features in \mytitle{} regarding OpenSSL. For example, implementing support the OpenSSL handshake callback would be really useful as right now we have to rely on a hack to know when the handshake is completed.
 
-Implementing support for proprietary large frames would also more performance on some systems.
+Implementing support for proprietary large frames would also allow compatibility with some proprietary setups.
 
-Finally, implementing different security options for OpenSSL would also be a possibility.
+Finally, implementing different security options for OpenSSL could also be a possibility.
 \newpage
 \printbibliography
 
