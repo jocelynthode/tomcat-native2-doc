@@ -99,6 +99,7 @@ This means we need to :
 \item Abstract Tomcat Native to be used in Tomcat and Undertow
 \item Provide good documentation so that the open-source community can use the project
 \item Run benchmarks to test the implementation on multiple platforms
+\item Merge OpenSSL 1.1 in \mytitle{}
 \item Extend the OpenSSL support by adding JNIs for more features
 \end{enumerate}
 
@@ -113,29 +114,85 @@ This project requires us to read some documentation and source code. We also nee
 
 \href{https://github.com/jocelynthode/tomcat-native2}{tomcat-native2} is the repository dedicated to the code. This repo includes our implementation, and the documentation directly concerning it. For example, it should contain a ReadMe describing the building process and the main purpose of the project.
 
-\section{Results \& Realization}
-\todo[inline] {realization and results, short explanation of the deliverables}
+\section{Realization}
+The project was realized as follows : We have a common Java code base between Undertow and Tomcat to integrate \mytitle{}. Unfortunately the entire Java code could not be the same in Undertow and Tomcat. The reasons are explained in the section \ref{sec:issues}.
 
-\section{Recommendations}
-\todo[inline] {recommendations, project limitations, outstanding issues,future work}
+The C code used in \mytitle{} does not rely on APR anymore. It only works under POSIX compatible systems for now. \mytitle{} is working with OpenSSL up to 1.1. To use \mytitle{} one needs to build the native and java parts and then include the generated jar as a dependency on both Tomcat and Undertow.
 
+In Undertow, a sample example has been provided to showcase how to use \mytitle{} together with the web server.
+
+In Tomcat, simply using the NIO.2 or NIO connector should work if specifying our library.
+
+\subsection{Build}
+\subsubsection{\mytitle{}}
+\begin{enumerate}
+	\item \begin{verbatim}ant jar\end{verbatim}
+	\item \begin{verbatim}cd native\end{verbatim}
+	\item \begin{verbatim}./buildconf && ./configure && make\end{verbatim} (make might return an error because it could not be installed, but this is not important)
+\end{enumerate}
+\subsubsection{Tomcat}
+\begin{enumerate}
+	\item \begin{verbatim}export TCN2=path/to/tomcat-native-repository\end{verbatim}
+	\item \begin{verbatim}git clone https://github.com/jocelynthode/tomcat.git && cd tomcat\end{verbatim}
+	\item \begin{verbatim}git checkout TCN2\end{verbatim}
+	\item \begin{verbatim}echo "tcn2.jar=$TCN2/dist/tomcat-native-1.2.8.jar" >> build.properties\end{verbatim}
+	\item \begin{verbatim}ant\end{verbatim}
+\end{enumerate}
+\subsubsection{Undertow}
+\begin{enumerate}
+	\item \begin{verbatim}export TCN2=path/to/tomcat-native-repository\end{verbatim}
+	\item \begin{verbatim}git clone https://github.com/jocelynthode/undertow.git && cd undertow\end{verbatim}
+	\item \begin{verbatim}git checkout TCN2\end{verbatim}
+	\item \begin{verbatim}./deps.sh "$TCN2"\end{verbatim}
+	\item \begin{verbatim}mvn package -DskipTests -Dcheckstyle.skip\end{verbatim}
+\end{enumerate}
+These informations are also available on the ReadMe of the \mytitle{} repository as well as specific instructions to run the obtained builds.
+
+\section{Architecture}
+\todo[inline] {specify the basic architecture of our software use the diagram maybe}
+
+\section{Results}
+
+\todo[inline] {here speak about benchmarks}
+
+\section{Issues}
+\label{sec:issues}
+During this project, we face two issues described in the following subsections.
+\subsection{Diverging Philosophies}
+
+\subsection{Dynamic Loading}
+
+\section{Future Works}
+We completed all the obligatory milestones of the projects. However, some optional tasks were either not started or not finished.
+
+The current code is only a prototype. In the future, tests should be put in place to ensure the code is working as expected in every situations. \mytitle{} should also have a streamlined build process. This should be done when it is eventually merged in Tomcat and Undertow.
+
+\subsection{Dynamic Loading}
+Some experiments regarding dynamic loading were performed in a separate branch on our \mytitle{} repository. This would enable \mytitle{} to not only use OpenSSL but other TLS/SSL libraries such as LibreSSL or BoringSSL. We unfortunately could not find the time to finish this work as this proved to be more complicated than we anticipated.
+
+In the future adding Dynamic Loading to \mytitle{} could be a boon for the project.
+
+\subsection{TLS/SSL Integration}
+At the moment \mytitle{} does not support the use of sessions. This was not needed to have a working prototype. However, to have a complete library sessions must be supported.
+
+Support for OpenSSL handshake callback should be implemented down the line. Currently we rely on a hack to make it work.
 \newpage
 \printbibliography
 
 \begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.7]{diagram_current_way.pdf}
-\end{center}
-\caption{\textbf{Diagram showing the different ways to use TLS/SSL in Tomcat.}}
-\label{fig:current}
+	\begin{center}
+		\includegraphics[scale=0.7]{diagram_current_way.pdf}
+	\end{center}
+	\caption{\textbf{Diagram showing the different ways to use TLS/SSL in Tomcat.}}
+	\label{fig:current}
 \end{figure}
 
 \begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.7]{diagram_goal.pdf}
-\end{center}
-\caption{\textbf{Diagram showing the expected end result of our project.}}
-\label{fig:goal}
+	\begin{center}
+		\includegraphics[scale=0.7]{diagram_goal.pdf}
+	\end{center}
+	\caption{\textbf{Diagram showing the end result of our project.}}
+	\label{fig:goal}
 \end{figure}
 
 \FloatBarrier
