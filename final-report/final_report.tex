@@ -159,8 +159,15 @@ These informations are also available on the ReadMe of the \mytitle{} repository
 \label{sec:issues}
 During this project, we face two issues described in the following subsections.
 \subsection{Diverging Philosophies}
+When we made \mytitle{} Compatible we wanted to have everything in common in the Java code between Undertow and Tomcat. Unfortunately this was not possible due to diverging opinions between the Tomcat and Undertow maintainers.
 
+This means that in the future, Undertow will have to have the Java parts related to \mytitle{} in a different Repository that would be called as a dependency when using \mytitle{}. The same applies to Tomcat.
+
+Figure \todo[inline] {list diagram of differing parts} shows which parts are common and which are not in the architecture.
 \subsection{Dynamic Loading}
+Some experiments regarding dynamic loading were performed in a separate branch on our \mytitle{} repository. This would enable \mytitle{} to not only use OpenSSL but other TLS/SSL libraries such as LibreSSL or BoringSSL. 
+
+Unfortunately we encountered some bugs while trying to integrate it in \mytitle{}.Taking the time to debug this would have taken too much time to the detriment of the rest of the project. We therefore made the decision to stop working on this feature.
 
 \section{Future Works}
 We completed all the obligatory milestones of the projects. However, some optional tasks were either not started or not finished.
@@ -168,7 +175,7 @@ We completed all the obligatory milestones of the projects. However, some option
 The current code is only a prototype. In the future, tests should be put in place to ensure the code is working as expected in every situations. \mytitle{} should also have a streamlined build process. This should be done when it is eventually merged in Tomcat and Undertow.
 
 \subsection{Dynamic Loading}
-Some experiments regarding dynamic loading were performed in a separate branch on our \mytitle{} repository. This would enable \mytitle{} to not only use OpenSSL but other TLS/SSL libraries such as LibreSSL or BoringSSL. We unfortunately could not find the time to finish this work as this proved to be more complicated than we anticipated.
+We unfortunately could not find the time to finish dynamic loading as this proved to be more complicated than we anticipated as stated in section \ref{sec:issues}.
 
 In the future adding Dynamic Loading to \mytitle{} could be a boon for the project.
 
