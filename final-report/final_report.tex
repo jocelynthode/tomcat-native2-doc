@@ -115,38 +115,42 @@ This project requires us to read some documentation and source code. We also nee
 \href{https://github.com/jocelynthode/tomcat-native2}{tomcat-native2} is the repository dedicated to the code. This repo includes our implementation, and the documentation directly concerning it. For example, it should contain a ReadMe describing the building process and the main purpose of the project.
 
 \section{Realization}
-The project was realized as follows : We have a common Java code base between Undertow and Tomcat to integrate \mytitle{}. Unfortunately the entire Java code could not be the same in Undertow and Tomcat. The reasons are explained in the section \ref{sec:issues}.
+The project was realized as follows: \mytitle{} is built as a common code base between Undertow and Tomcat. It should be compiled in standalone and optionally loaded at run time if the user need to use the OpenSSL engine.
+\todo[inline]{What I added sounds partly redundant with next paragraph}
+For this purpose, we needed to move some Tomcat code related to Tomcat-Native into our repo. Unfortunately the entire Java code could not be the same in Undertow and Tomcat. The reasons are explained in the section \ref{sec:issues}.
+\todo[inline]{Is this really an issue in the end?}
 
 The C code used in \mytitle{} does not rely on APR anymore. It only works under POSIX compatible systems for now. \mytitle{} is working with OpenSSL up to 1.1. To use \mytitle{} one needs to build the native and java parts and then include the generated jar as a dependency on both Tomcat and Undertow.
 
 In Undertow, a sample example has been provided to showcase how to use \mytitle{} together with the web server.
 
 In Tomcat, simply using the NIO.2 or NIO connector should work if specifying our library.
+\todo[inline]{reformulate ?}
 
 \subsection{Build}
 \subsubsection{\mytitle{}}
 \begin{enumerate}
 	\item \begin{verbatim}ant jar\end{verbatim}
 	\item \begin{verbatim}cd native\end{verbatim}
-	\item \begin{verbatim}./buildconf && ./configure && make\end{verbatim} (make might return an error because it could not be installed, but this is not important)
+	\item \begin{verbatim}./buildconf && ./configure && make\end{verbatim} (\texttt{make} might return an error because it tries to install the libraries after building them, but this is not important)
 \end{enumerate}
 \subsubsection{Tomcat}
 \begin{enumerate}
-	\item \begin{verbatim}export TCN2=path/to/tomcat-native-repository\end{verbatim}
+	\item \begin{verbatim}TCN2=path/to/tomcat-native-repository\end{verbatim}
 	\item \begin{verbatim}git clone https://github.com/jocelynthode/tomcat.git && cd tomcat\end{verbatim}
-	\item \begin{verbatim}git checkout TCN2\end{verbatim}
+	\item \begin{verbatim}git checkout undercat_trunk\end{verbatim}
 	\item \begin{verbatim}echo "tcn2.jar=$TCN2/dist/tomcat-native-1.2.8.jar" >> build.properties\end{verbatim}
 	\item \begin{verbatim}ant\end{verbatim}
 \end{enumerate}
 \subsubsection{Undertow}
 \begin{enumerate}
-	\item \begin{verbatim}export TCN2=path/to/tomcat-native-repository\end{verbatim}
+	\item \begin{verbatim}TCN2=path/to/tomcat-native-repository\end{verbatim}
 	\item \begin{verbatim}git clone https://github.com/jocelynthode/undertow.git && cd undertow\end{verbatim}
-	\item \begin{verbatim}git checkout TCN2\end{verbatim}
+	\item \begin{verbatim}git checkout undercat_trunk\end{verbatim}
 	\item \begin{verbatim}./deps.sh "$TCN2"\end{verbatim}
 	\item \begin{verbatim}mvn package -DskipTests -Dcheckstyle.skip\end{verbatim}
 \end{enumerate}
-These informations are also available on the ReadMe of the \mytitle{} repository as well as specific instructions to run the obtained builds.
+The build process is also available in more details on the ReadMe of the \mytitle{} repository, as well as specific instructions to run the obtained builds.
 
 \section{Architecture}
 \todo[inline] {specify the basic architecture of our software use the diagram maybe}
