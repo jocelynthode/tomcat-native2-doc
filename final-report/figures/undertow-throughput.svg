@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="199mm" height="113mm" viewBox="0 0 19900 11300" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke-width="28.222" stroke-linejoin="round" xml:space="preserve">
- <path fill="rgb(255,255,255)" stroke="none" d="M 9954,11345 L 0,11345 0,0 19907,0 19907,11345 9954,11345 Z"/>
  <path fill="none" stroke="rgb(179,179,179)" stroke-linejoin="round" d="M 8533,9504 L 2211,9504 2211,1549 14855,1549 14855,9504 8533,9504 Z"/>
  <path fill="none" stroke="rgb(179,179,179)" stroke-linejoin="round" d="M 14855,9503 L 2211,9503"/>
  <path fill="none" stroke="rgb(179,179,179)" stroke-linejoin="round" d="M 14855,8619 L 2211,8619"/>
@@ -103,7 +102,7 @@
  <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="1179" y="3442"><tspan fill="rgb(0,0,0)" stroke="none">1400</tspan></tspan></tspan></text>
  <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="1179" y="2558"><tspan fill="rgb(0,0,0)" stroke="none">1600</tspan></tspan></tspan></text>
  <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="1179" y="1674"><tspan fill="rgb(0,0,0)" stroke="none">1800</tspan></tspan></tspan></text>
- <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="459px" font-weight="400"><tspan class="TextPosition" x="7246" y="891"><tspan fill="rgb(0,0,0)" stroke="none">Undertow Throughput (c40)</tspan></tspan></tspan></text>
+ <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="459px" font-weight="400"><tspan class="TextPosition" x="5981" y="920"><tspan fill="rgb(0,0,0)" stroke="none">Undertow Throughput (c40)</tspan></tspan></tspan></text>
  <path fill="none" stroke="rgb(0,69,134)" stroke-width="80" stroke-linejoin="round" d="M 16083,5412 L 16883,5412"/>
  <path fill="rgb(0,69,134)" stroke="none" d="M 16377,5307 L 16377,5518 16588,5518 16588,5307 16377,5307 Z"/>
  <path fill="none" stroke="rgb(0,69,134)" stroke-linejoin="round" d="M 16377,5307 L 16377,5518 16588,5518 16588,5307 16377,5307 Z"/>

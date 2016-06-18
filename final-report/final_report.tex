@@ -165,9 +165,24 @@ Concerning encryption, Undertow follows a similar architecture as the second way
 Figure \ref{fig:goal} describes the architecture of \mytitle{} after our changes. We got rid of the APR connector and don't use the APR in JNIs anymore. Most of the Java code concerning the OpenSSL engine was moved from Tomcat to \mytitle{} so that Undertow can use it. However Tomcat and Undertow use a different system to provide and instantiate the OpenSSL engine. These differences are explained in section \ref{sec:issues}. To fix this issue, we kept slightly different versions of some classes in both projects.
 
 \section{Results}
-
 \todo[inline] {here speak about benchmarks}
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.23]{tomcat-throughput.pdf}
+	\end{center}
+	\caption{\textbf{Diagram showing the difference in throughput between Tomcat with \mytitle{} and Tomcat with Tomcat Native. }}
+	\label{fig:tomcat-throughput}
+\end{figure}
 
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.23]{undertow-throughput.pdf}
+	\end{center}
+	\caption{\textbf{Diagram showing the difference in throughput between Undertow with \mytitle{} and Undertow with the JSSE SSL Engine.}}
+	\label{fig:undertow-throughput}
+\end{figure}
+
+\FloatBarrier
 \section{Issues}
 \label{sec:issues}
 During this project, we face two issues described in the following subsections.
