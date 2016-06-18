@@ -103,15 +103,15 @@
  <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="1179" y="3442"><tspan fill="rgb(0,0,0)" stroke="none">1400</tspan></tspan></tspan></text>
  <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="1179" y="2558"><tspan fill="rgb(0,0,0)" stroke="none">1600</tspan></tspan></tspan></text>
  <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="1179" y="1674"><tspan fill="rgb(0,0,0)" stroke="none">1800</tspan></tspan></tspan></text>
- <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="459px" font-weight="400"><tspan class="TextPosition" x="7805" y="891"><tspan fill="rgb(0,0,0)" stroke="none">Undertow Throughput</tspan></tspan></tspan></text>
+ <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="459px" font-weight="400"><tspan class="TextPosition" x="7246" y="891"><tspan fill="rgb(0,0,0)" stroke="none">Undertow Throughput (c40)</tspan></tspan></tspan></text>
  <path fill="none" stroke="rgb(0,69,134)" stroke-width="80" stroke-linejoin="round" d="M 16083,5412 L 16883,5412"/>
  <path fill="rgb(0,69,134)" stroke="none" d="M 16377,5307 L 16377,5518 16588,5518 16588,5307 16377,5307 Z"/>
  <path fill="none" stroke="rgb(0,69,134)" stroke-linejoin="round" d="M 16377,5307 L 16377,5518 16588,5518 16588,5307 16377,5307 Z"/>
  <path fill="none" stroke="rgb(255,66,14)" stroke-width="80" stroke-linejoin="round" d="M 16083,5931 L 16883,5931"/>
  <path fill="rgb(255,66,14)" stroke="none" d="M 16377,5931 L 16483,6037 16588,5931 16483,5826 16377,5931 Z"/>
  <path fill="none" stroke="rgb(255,66,14)" stroke-linejoin="round" d="M 16377,5931 L 16483,6037 16588,5931 16483,5826 16377,5931 Z"/>
- <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="16983" y="5538"><tspan fill="rgb(0,0,0)" stroke="none">OpenSSL-TCN2</tspan></tspan></tspan></text>
- <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="16983" y="6057"><tspan fill="rgb(0,0,0)" stroke="none">JSSE-SSL</tspan></tspan></tspan></text>
+ <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="16983" y="5538"><tspan fill="rgb(0,0,0)" stroke="none">JSSE-SSL</tspan></tspan></tspan></text>
+ <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="353px" font-weight="400"><tspan class="TextPosition" x="16983" y="6057"><tspan fill="rgb(0,0,0)" stroke="none">OpenSSL-TCN2</tspan></tspan></tspan></text>
  <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="318px" font-weight="400"><tspan class="TextPosition" x="7900" y="10775"><tspan fill="rgb(0,0,0)" stroke="none">File Size</tspan></tspan></tspan></text>
  <text class="TextShape" transform="translate(825,7067) rotate(-90) translate(-825,-7067)"><tspan class="TextParagraph" font-family="Liberation Sans" font-size="318px" font-weight="400"><tspan class="TextPosition" x="825" y="7067"><tspan fill="rgb(0,0,0)" stroke="none">Throughput (MiB/s)</tspan></tspan></tspan></text>
 </svg>
