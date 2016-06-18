@@ -87,7 +87,7 @@ Unfortunately, Undertow isn't compatible with Tomcat Native at the moment.
 Until last year, the APR would manage the encrypted sockets by itself. However this implied a lot of C code to maintain. To ease maintenance, some work has been done to use OpenSSL APIs directly instead. This works well enough despite some acceptable performance penalty. However the APR still provides the bindings to these APIs.
 We now want to strip the current solution of the APR and make the result compatible with Undertow.
 
-Figure \ref{fig:current} shows an overview of the different ways to use TLS/SSL in Tomcat. This figure describes the path taken by a piece of data, going from Tomcat/Undertow to the OS network layer. There is a different color for each way to use TLS/SSL.
+Figure \ref{fig:current} shows an overview of the different ways to use TLS/SSL in Tomcat. This figure describes the path taken by a piece of data, going from Tomcat/Undertow to the OS network layer. There is a different color for each way to use TLS/SSL. We describe the architecture in more detail in Section \ref{sec:architecture}.
 
 \subsection{Goals and objectives of the project}
 
@@ -153,7 +153,18 @@ In Tomcat, simply using the NIO.2 or NIO connector should work if specifying our
 The build process is also available in more details on the ReadMe of the \mytitle{} repository, as well as specific instructions to run the obtained builds.
 
 \section{Architecture}
-\todo[inline] {specify the basic architecture of our software use the diagram maybe}
+\label{sec:architecture}
+\subsection{State Of The Art}
+Currently there are 3 ways to use SSL/TLS in Tomcat, as shown on Figure \ref{fig:current}. The first one uses the OpenSSL through the APR connector (blue path). Here the APR handle encryption and networking. It provides its own socket API and transparently encrypts and decrypts data flowing through it. Since the APR is programmed in C, Tomcat-Native offers JNIs to be used in Tomcat.
+
+The second way (brown and black path) uses an NIO/NIO.2 connector with the JSSE engine, included in Java standard library. This has the benefit of using no external dependency. However the JSSE engine is not native code, which makes it the slowest option for SSL/TLS. Note that JSSE also provides a networking API, but Tomcat uses NIO/NIO.2 instead.
+
+The third way (red and black path) also uses an NIO/NIO.2 connector, but it uses OpenSSL instead of JSSE for encryption. For this OpenSSL engine, Tomcat provides Java classes implementing the JSSE API. Then these classes call OpenSSL functions through JNIs offered in Tomcat Native. However, the JNIs still use some features of the APR behind the scene, such as portable memory management. As explained in previous sections, this way was implemented last year with the goal of replacing the APR connector.
+
+Concerning encryption, Undertow follows a similar architecture as the second way (NIO/NIO2 with JSSE engine).
+
+\subsection{Tomcat Native 2}
+Figure \ref{fig:goal} describes the architecture of \mytitle{} after our changes. We got rid of the APR connector as well as usage of the APR in JNIs. Most of the Java code concerning the OpenSSL engine was moved from Tomcat to \mytitle{}, so Undertow can use it. However Tomcat and Undertow use a different system to provide and instantiate the OpenSSL engine, so we kept slightly different versions of some classes in both projects.
 
 \section{Results}
 
@@ -163,11 +174,9 @@ The build process is also available in more details on the ReadMe of the \mytitl
 \label{sec:issues}
 During this project, we face two issues described in the following subsections.
 \subsection{Diverging Philosophies}
-When we made \mytitle{} Compatible we wanted to have everything in common in the Java code between Undertow and Tomcat. Unfortunately this was not possible due to diverging opinions between the Tomcat and Undertow maintainers.
+When we made \mytitle{} Compatible we wanted to have everything in common in the Java code between Undertow and Tomcat. Unfortunately this was not possible due to diverging opinions between the Tomcat and Undertow maintainers. This concerned the way the OpenSSL engine is provided and instantiated in both project. Undertow maintainers want to use the SPI\footnote{Security Provider Interfaces}, as suggested by JSSE. Tomcat already uses a custom system, which maintainers think is more practical for their usage.
 
-This means that in the future, Undertow will have to have the Java parts related to \mytitle{} in a different Repository that would be called as a dependency when using \mytitle{}. The same applies to Tomcat.
-
-Figure \todo[inline] {list diagram of differing parts} shows which parts are common and which are not in the architecture.
+Fortunately, this concerned much fewer code than we imagined.
 \subsection{Dynamic Loading}
 Some experiments regarding dynamic loading were performed in a separate branch on our \mytitle{} repository. This would enable \mytitle{} to not only use OpenSSL but other TLS/SSL libraries such as LibreSSL or BoringSSL. 
 
