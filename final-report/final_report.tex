@@ -115,7 +115,7 @@ This project requires us to read some documentation and source code. We also nee
 \href{https://github.com/jocelynthode/tomcat-native2}{tomcat-native2} is the repository dedicated to the code. This repo includes our implementation, and the documentation directly concerning it. For example, it should contain a ReadMe describing the building process and the main purpose of the project.
 
 \section{Realization}
-The project was realized as follows: \mytitle{} is built as a common code base between Undertow and Tomcat. It should be optionally compiled on the side and loaded at run time if the user needs to use the OpenSSL engine.
+The project was realized as follows: \mytitle{} is built as a common code base between Undertow and Tomcat. It should be optionally compiled on the side and loaded at run-time if the user needs to use the OpenSSL engine.
 
 For this purpose, we needed to move some Tomcat code related to Tomcat-Native into our repo. Unfortunately the entire Java code could not be the same in Undertow and Tomcat. The reasons are explained in the section \ref{sec:issues}.
 
@@ -175,24 +175,31 @@ During this project, we face two issues described in the following subsections.
 \subsection{Diverging Philosophies}
 When we made \mytitle{} Compatible we wanted to have everything in common in the Java code between Undertow and Tomcat. Unfortunately this was not possible due to diverging opinions between the Tomcat and Undertow maintainers. This concerned the way the OpenSSL engine is provided and instantiated in both project. Undertow maintainers want to use the SPI\footnote{Security Provider Interfaces}, as suggested by JSSE. Tomcat already uses a custom system, which maintainers think is more practical for their usage.
 
-Fortunately, this concerned much fewer code than we imagined although it forced us to rethink some parts of our architecture, especially how all components would connect with each other. \todo[inline]{Is this better reformulated and express the issue in more details ?}
+Fortunately, this covered much less code than we imagined although it forced us to rethink some parts of our architecture, in particular how all components would connect with each other.
 \subsection{Dynamic Loading}
-Some experiments regarding dynamic loading were performed in a separate branch on our \mytitle{} repository. This would enable \mytitle{} to not only use OpenSSL but other TLS/SSL libraries such as LibreSSL or BoringSSL. 
+Some experiments regarding dynamic loading were performed in the \texttt{dynload} branch of our \mytitle{} repository. This would enable \mytitle{} to swap OpenSSL for other TLS/SSL libraries such as LibreSSL or BoringSSL without having to recompile.
 
-Unfortunately we encountered some bugs while trying to integrate it in \mytitle{}.Taking the time to debug this would have taken too much time to the detriment of the rest of the project. We therefore made the decision to stop working on this feature.
+ Unfortunately developing a functional prototype with dynamic loading was taking too long, to the detriment of the rest of the project. We therefore made the decision to stop working on this feature.
 
 \section{Future Works}
 We completed all the obligatory milestones of the projects. However, some optional tasks were either not started or not finished.
 
 The current code is only a prototype. In the future, tests should be put in place to ensure the code is working as expected in every situations. \mytitle{} should also have a streamlined build process. This should be done when it is eventually merged in Tomcat and Undertow.
 
+\subsection{Better integration}
+Some improvements should be made regarding the integration of \mytitle{} in Tomcat and Undertow, in addition to a better build process.
+
+For example, in Undertow we handle ALPN\footnote{Application-Layer Protocol Negotiation} such that HTTP/2 is preferred, even when the underlying server does not support it.
+
+Moreover, we want \mytitle{} to be an optional run-time dependency. However Tomcat currently requires it both at compilation and run-time. Similarly we needed a few classes both in Tomcat and \mytitle{}, so we duplicated them in both projects. We did this to avoid a circular dependency between both projects, but there is a better way.
+
 \subsection{Dynamic Loading}
 We unfortunately could not find the time to finish dynamic loading as this proved to be more complicated than we anticipated as stated in section \ref{sec:issues}.
 
 In the future adding Dynamic Loading to \mytitle{} could be a boon for the project.
 
-\subsection{TLS/SSL Integration}
-At the moment \mytitle{} does not support the use of sessions. This was not needed to have a working prototype. However, to have a complete library sessions must be supported.
+\subsection{SSL/TLS Integration}
+At the moment \mytitle{} does not support the use of sessions. This was not needed to have a working prototype, especially since sessions were not well supported in Tomcat to begin with. However, support of sessions is required for a complete SSL library.
 
 Support for OpenSSL handshake callback should be implemented down the line. Currently we rely on a hack to make it work.
 \newpage
