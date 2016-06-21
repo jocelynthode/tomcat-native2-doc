@@ -248,6 +248,8 @@ In the future adding Dynamic Loading to \mytitle{} could be a boon for the proje
 \subsection{SSL/TLS Integration}
 At the moment \mytitle{} does not support the use of sessions. This was not needed to have a working prototype, especially since sessions were not well supported in Tomcat to begin with. However, support of sessions is required for a complete SSL library.
 
+Similarly, SSL Client mode does not work at the moment. We did not see Tomcat use client mode, but it could be useful in Undertow in a reverse proxy setup.
+
 Support for OpenSSL handshake callback should be implemented down the line. Currently we rely on a hack to make it work.
 \newpage
 \printbibliography
