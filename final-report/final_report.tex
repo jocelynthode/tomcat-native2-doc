@@ -164,13 +164,31 @@ Concerning encryption, Undertow follows a similar architecture as the second way
 \subsection{Tomcat Native 2}
 Figure \ref{fig:goal} describes the architecture of \mytitle{} after our changes. We got rid of the APR connector and don't use the APR in JNIs anymore. Most of the Java code concerning the OpenSSL engine was moved from Tomcat to \mytitle{} so that Undertow can use it. However Tomcat and Undertow use a different system to provide and instantiate the OpenSSL engine. These differences are explained in section \ref{sec:issues}. To fix this issue, we kept slightly different versions of some classes in both projects.
 
-\section{Results}
-\todo[inline] {here speak about benchmarks}
+\section{Benchmarks}
+This section describes the benchmarks that were run to ensure \mytitle{} meets our performance expectations.
+\subsection{Tomcat}
+Jean-Frederic Clere ran a benchmark that consists in requesting a file of fixed size, 100,000 times and from 160 concurrent clients. He repeated this test with files of different sizes, and measured the average throughput and CPU usage of Tomcat for each test.
+
+The cluster running this benchmark includes 4 machines generating the load (HTTP requests) and one test machine running Tomcat.
+
+Here are the specifications for the test machine:
+\\
+\\
+\begin{tabular}{rl}
+	Model: & IBM System x3650 \\ 
+	CPU: & Intel Xeon 2.50 GHz \\
+	CPU Cores: & 2x4 (8 total) \\
+	CPU Cache: & 6144 KB \\
+	Memory (RAM): & 20 GiB \\ 
+\end{tabular} 
+\\
+\\
+The machines are connected together via a 10 Gbit/s switch (\textit{Cisco Nexus 5000}).
 \begin{figure}[!h]
 	\begin{center}
 		\includegraphics[scale=0.23]{tomcat-throughput.pdf}
 	\end{center}
-	\caption{\textbf{Diagram showing the difference in throughput between Tomcat with \mytitle{} and Tomcat with Tomcat Native. }}
+	\caption{\textbf{Diagram showing the difference in throughput between Tomcat with \mytitle{} and Tomcat with Tomcat Native.}}
 	\label{fig:tomcat-throughput}
 \end{figure}
 
@@ -182,6 +200,7 @@ Figure \ref{fig:goal} describes the architecture of \mytitle{} after our changes
 	\label{fig:tomcat-cpu}
 \end{figure}
 
+\subsection{Undertow}
 \begin{figure}[!h]
 	\begin{center}
 		\includegraphics[scale=0.23]{undertow-throughput.pdf}
