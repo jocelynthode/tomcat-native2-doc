@@ -190,21 +190,6 @@ Figure \ref{fig:tomcat-throughput} demonstrates that the throughput of Tomcat is
 As seen on Figure \ref{fig:tomcat-cpu}, the CPU usage of \mytitle{} is either lower or equal to the CPU usage of Tomcat Native. Since the throughput of Tomcat Native did not decrease, this could indicate a small improvement in energy efficiency.
 
 Our work consisted in removing a layer of abstraction, so our performance goal was to keep the same throughput and CPU usage with a possible improvement. Therefore we can see that \mytitle{} reached our expectations according to these results.
-\begin{figure}[!h]
-	\begin{center}
-		\includegraphics[scale=0.23]{tomcat-throughput.pdf}
-	\end{center}
-	\caption{\textbf{Diagram showing the difference in throughput between Tomcat with \mytitle{} and Tomcat with Tomcat Native.}}
-	\label{fig:tomcat-throughput}
-\end{figure}
-
-\begin{figure}[!h]
-	\begin{center}
-		\includegraphics[scale=0.22]{tomcat-cpu.pdf}
-	\end{center}
-	\caption{\textbf{Diagram showing the difference in CPU usage between Tomcat with \mytitle{} and Tomcat with Tomcat Native.}}
-	\label{fig:tomcat-cpu}
-\end{figure}
 
 \subsection{Undertow}
 For Undertow we ran the tests ourselves on a desktop computer. The benchmark was similar, except with fewer concurrent clients and requests.
@@ -221,14 +206,6 @@ Here are the specifications for the test machine:
 \subsubsection{Results}
 See Figure \ref{fig:undertow-throughput} for the measured throughput of Undertow.
 As we expected, the OpenSSL engine provided by \mytitle{} outperforms JSSE by far. The throughput increases with file size, confirming that we see the biggest benefits when most of the workload is encryption.
-
-\begin{figure}[!h]
-	\begin{center}
-		\includegraphics[scale=0.23]{undertow-throughput.pdf}
-	\end{center}
-	\caption{\textbf{Diagram showing the difference in throughput between Undertow with \mytitle{} and Undertow with the JSSE SSL Engine.}}
-	\label{fig:undertow-throughput}
-\end{figure}
 
 \FloatBarrier
 \section{Issues}
@@ -283,6 +260,30 @@ Support for OpenSSL handshake callback should be implemented down the line. Curr
 	\end{center}
 	\caption{\textbf{Diagram showing the end result of our project.}}
 	\label{fig:goal}
+\end{figure}
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.23]{tomcat-throughput.pdf}
+	\end{center}
+	\caption{\textbf{Diagram showing the difference in throughput between Tomcat with \mytitle{} and Tomcat with Tomcat Native.}}
+	\label{fig:tomcat-throughput}
+\end{figure}
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.22]{tomcat-cpu.pdf}
+	\end{center}
+	\caption{\textbf{Diagram showing the difference in CPU usage between Tomcat with \mytitle{} and Tomcat with Tomcat Native.}}
+	\label{fig:tomcat-cpu}
+\end{figure}
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[scale=0.23]{undertow-throughput.pdf}
+	\end{center}
+	\caption{\textbf{Diagram showing the difference in throughput between Undertow with \mytitle{} and Undertow with the JSSE SSL Engine.}}
+	\label{fig:undertow-throughput}
 \end{figure}
 
 \FloatBarrier
